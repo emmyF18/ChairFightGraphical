@@ -1,0 +1,11 @@
+C:\Users\emmy.farrell\Documents\ChairFight\ChairFightText\obj\Debug\netcoreapp2.1\ChairFightText.csprojAssemblyReference.cache
+C:\Users\emmy.farrell\Documents\ChairFight\ChairFightText\obj\Debug\netcoreapp2.1\ChairFightText.csproj.CoreCompileInputs.cache
+C:\Users\emmy.farrell\Documents\ChairFight\ChairFightText\obj\Debug\netcoreapp2.1\ChairFightText.AssemblyInfoInputs.cache
+C:\Users\emmy.farrell\Documents\ChairFight\ChairFightText\obj\Debug\netcoreapp2.1\ChairFightText.AssemblyInfo.cs
+C:\Users\emmy.farrell\Documents\ChairFight\ChairFightText\bin\Debug\netcoreapp2.1\ChairFightText.deps.json
+C:\Users\emmy.farrell\Documents\ChairFight\ChairFightText\bin\Debug\netcoreapp2.1\ChairFightText.runtimeconfig.json
+C:\Users\emmy.farrell\Documents\ChairFight\ChairFightText\bin\Debug\netcoreapp2.1\ChairFightText.runtimeconfig.dev.json
+C:\Users\emmy.farrell\Documents\ChairFight\ChairFightText\bin\Debug\netcoreapp2.1\ChairFightText.dll
+C:\Users\emmy.farrell\Documents\ChairFight\ChairFightText\bin\Debug\netcoreapp2.1\ChairFightText.pdb
+C:\Users\emmy.farrell\Documents\ChairFight\ChairFightText\obj\Debug\netcoreapp2.1\ChairFightText.dll
+C:\Users\emmy.farrell\Documents\ChairFight\ChairFightText\obj\Debug\netcoreapp2.1\ChairFightText.pdb
