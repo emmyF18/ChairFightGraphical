@@ -19,7 +19,7 @@ public class FightingActions : MonoBehaviour
 
     public void player1Fight()
     {
-        Debug.log("fight1");
+        Debug.Log("fight1");
     }
     
 }
