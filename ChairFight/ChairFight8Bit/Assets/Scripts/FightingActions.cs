@@ -1,8 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System;
-using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -10,46 +7,55 @@ using Random = UnityEngine.Random;
 
 public class FightingActions : MonoBehaviour
 {
-    private  const  int strahdHPMax = 110;
-    private  const int richtenHPMax = 90;
-    //private static readonly UnityEngine.Random rand = new UnityEngine.Random();
-    private static int strahdHP;
-    private static int richtenHP;
-    private static int order; // strix 1/paultin 2
+    private  const  int StrahdHpMax = 110;
+    private  const int RichtenHpMax = 90;
+    private static int _strahdHp;
+    private static int _richtenHp;
+    private static int _order; // strix 1/paultin 2
+
+    private Text pHeath;
+    private Text sayings;
+    private Text sHeath;
     // Start is called before the first frame update
     void Start()
     {
-        strahdHP = strahdHPMax;
-        richtenHP = richtenHPMax;
-        SetButtons();
-       
+        _strahdHp = StrahdHpMax;
+        _richtenHp = RichtenHpMax;
+        SetButtons(); 
+         sHeath = GameObject.Find("SHeath").GetComponent<Text>();
+         pHeath = GameObject.Find("PHeath").GetComponent<Text>();
+         sayings = GameObject.Find("SayingText").GetComponent<Text>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (strahdHP < 0)
+        pHeath.text = _strahdHp.ToString();
+        sHeath.text = _richtenHp.ToString();
+        if (_strahdHp < 0)
         {
-            //GUI.Label(new Rect(10, 10, 100, 20),
-                //"Strahd Von Chairovich falls to the ground in pieces. Paultin:No, my beautiful chair!!");
-            endGame();
+            sayings.text = "Strahd Von Chairovich falls to the ground in pieces. Paultin:No, my beautiful chair!!";
+            EndGame();
         }
-        else if(richtenHP < 0)
+        else if(_richtenHp < 0)
         {
-            //GUI.Label(new Rect(10, 10, 100, 20), 
-               // "Chair Richten falls to the ground in pieces \n Strix: We were going to go to the big leagues!");
-            endGame();
+            sayings.text = "Chair Richten falls to the ground in pieces. Strix: We were going to go to the big leagues!";
+            EndGame();
         }
         
     }
 
-    private void endGame()
+    private void EndGame()
     {
-        SceneManager.LoadScene("Scenes/StartScene"); 
-        
-        
+        StartCoroutine(Wait());
     }
-    
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(30);
+        SceneManager.LoadScene("Scenes/StartScene");
+    }
+
+
     /*public void PlayerControlledFight()
     {
         string buttonName = GameObject.Find("buttonp1").name;
@@ -124,71 +130,78 @@ public class FightingActions : MonoBehaviour
     
     public void StrixKickAttack()
     {
-        
         if ((UnityEngine.Random.Range(0,100) + 1) <= 90)
         {
-            strahdHP -= 20;
+            //Debug.Log("attack "+ _strahdHp +" "+ _richtenHp);
+            _strahdHp -= 20;
         }
         else
         {
-            Debug.Log("attack failed"+ strahdHP +" "+ richtenHP);
+            //Debug.Log("attack failed"+ _strahdHp +" "+ _richtenHp);
         }
+        TurnSayings();
         AiAttack("Paultin");
     }
 
     public  void StrixPunchAttack()
     {
-
         if ((UnityEngine.Random.Range(0,100) + 1) <= 70)
         {
-            strahdHP -= 40;
+            //Debug.Log("attack"+ _strahdHp +" "+ _richtenHp);
+            _strahdHp -= 40;
         }
         else
         {
-            Debug.Log("attack failed"+ strahdHP +" "+ richtenHP);
+            //Debug.Log("attack failed"+ _strahdHp +" "+ _richtenHp);
         }
+        TurnSayings();
         AiAttack("Paultin");
-
     }
-
-   public   void StrixPanic()
+    public   void StrixPanic()
     {
-        Debug.Log("strixHeal"+ strahdHP +" "+ richtenHP);
-        richtenHP += 20;
+        //Debug.Log("strixHeal"+ _strahdHp +" "+ _richtenHp);
+        _richtenHp += 20;
+        TurnSayings();
         AiAttack("Paultin");
+        
     }
 
     public  void PaultinPunch()
     {
         if ((UnityEngine.Random.Range(0,100) + 1) <= 80)
         {
-            richtenHP -= 20;
-            Debug.Log("punch succeeded, -20 damage"+ strahdHP +" "+ richtenHP);
+            _richtenHp -= 20;
+            //Debug.Log("punch succeeded, -20 damage"+ _strahdHp +" "+ _richtenHp);
         }
         else
         {
-            Debug.Log("attack failed"+ strahdHP +" "+ richtenHP);
+            //Debug.Log("attack failed"+ _strahdHp +" "+ _richtenHp);
         }
+        TurnSayings();
         AiAttack("Strix");
         
     }
-
-   public  void PaultinSlam()
+    public  void PaultinSlam()
     {
-        
         if ((UnityEngine.Random.Range(0,100) + 1) <= 60)
         {
-            richtenHP -= 40;
-            Debug.Log("punch succeded, -40 damage richten");
+            _richtenHp -= 40;
+            //Debug.Log("punch succeded, -40 damage richten");
         }
         else
         {
-            Debug.Log("attack failed");
+            //Debug.Log("attack failed");
         }
+        TurnSayings();
         AiAttack("Strix");
-
     }
-
+    public  void PaultinDrink()
+    {
+        //Debug.Log("paultinHeal"+ _strahdHp +" "+ _richtenHp);
+        _strahdHp += 20;
+        TurnSayings();
+        AiAttack("Strix");
+    }
    private void AiAttack(String person)
    {
        int aiSelection = Random.Range(1,6);
@@ -196,68 +209,86 @@ public class FightingActions : MonoBehaviour
        {
            if (person.Equals("Strix"))
            {
-               StrixKickAttack();
+               if ((UnityEngine.Random.Range(0,100) + 1) <= 90)
+               {
+                   Debug.Log("attack "+ _strahdHp +" "+ _richtenHp);
+                   _strahdHp -= 20;
+               }
+               else
+               {
+                   Debug.Log("attack failed"+ _strahdHp +" "+ _richtenHp);
+               }
            }
            else
            {
-               PaultinPunch();
+               if ((UnityEngine.Random.Range(0,100) + 1) <= 80)
+               {
+                   _richtenHp -= 20;
+                   Debug.Log("punch succeeded, -20 damage"+ _strahdHp +" "+ _richtenHp);
+               }
+               else
+               {
+                   Debug.Log("attack failed"+ _strahdHp +" "+ _richtenHp);
+               }
            }
        }
        else if (aiSelection == 3 || aiSelection == 4)
        {
            if (person.Equals("Strix"))
            {
-               StrixPunchAttack();
+               if ((UnityEngine.Random.Range(0,100) + 1) <= 70)
+               {
+                   Debug.Log("attack"+ _strahdHp +" "+ _richtenHp);
+                   _strahdHp -= 40;
+               }
+               else
+               {
+                   Debug.Log("attack failed"+ _strahdHp +" "+ _richtenHp);
+               }
            }
            else
            {
-               PaultinSlam();
+               if ((UnityEngine.Random.Range(0,100) + 1) <= 60)
+               {
+                   _richtenHp -= 40;
+                   Debug.Log("punch succeded, -40 damage richten");
+               }
+               else
+               {
+                   Debug.Log("attack failed");
+               }
            }
        }
        else
        {
            if (person.Equals("Strix"))
            {
-               StrixPanic();
+               Debug.Log("strixHeal"+ _strahdHp +" "+ _richtenHp);
+               _richtenHp += 20;
            }
            else
            {
-               PaultinDrink();
+               Debug.Log("paultinHeal"+ _strahdHp +" "+ _richtenHp);
+               _strahdHp += 20;
            }
        }
    }
-
-   public  void PaultinDrink()
-    {
-        //Console.WriteLine("Paultin uses I need a drink. \n Paultin leaves and gets a new drink for a turn");
-        Debug.Log("paultinHeal"+ strahdHP +" "+ richtenHP);
-        strahdHP += 20;
-        AiAttack("Strix");
-
-    }
-
-   static void TurnSayings(int turnNumber)
-    {
-        //Text t = null;
+   
+    void TurnSayings()
+   {
+       int turnNumber = Random.Range(1, 7);
         
-        if (turnNumber == 2)
+        if (turnNumber == 1 || turnNumber == 2)
         {
-            //t.text = "Paultin: It's okay, we scared them with the first round, Strahd von Chairovich! Chair Richten, you bastard! After this next attack you won't have a leg to stand on!";
-            //Console.WriteLine(" Paultin: It's okay, we scared them with the first round, Strahd von Chairovich! "
-            // + "\n  Chair Richten, you bastard! After this next attack you won't have a leg to stand on!");
+            sayings.text ="Paultin: Chair Richten, you bastard! After this next attack you won't have a leg to stand on!";
         }
-        else if (turnNumber == 4)
+        else if (turnNumber == 3 || turnNumber == 4)
         {
-            //Console.WriteLine(" Paultin: It appears your chair has not trained hard enough.");
+            sayings.text =" Paultin: It appears your chair has not trained hard enough.";
         }
-        else if (turnNumber == 6)
+        else if (turnNumber == 5 || turnNumber == 6)
         {
-            //Console.WriteLine(" Strix: Don't give up Chair Richten! We can still do this!");
+            sayings.text =" Strix: Don't give up Chair Richten! We can still do this!";
         }
-        
-    }
-    
-
-
-    
+   }
 }
